@@ -1,0 +1,9 @@
+# Titles to use for the report.
+title: "RNAgrinder"
+subtitle: "Summary & Statistics"
+intro_text: "MultiQC reports for RNASeq Data."
+report_header_info:
+        - Analyzed by: 'RNAgrinder@KAUST'
+## Change the output filenames
+output_fn_name: mqc_report.html
+data_dir_name: mqc_report_data
