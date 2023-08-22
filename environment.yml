@@ -1,0 +1,34 @@
+name: RNAgrinder
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - star
+    - picard=2.27.4
+    - bioawk
+    - fastqc
+    - fastp
+    - samtools
+    - csvtk
+    - bioconductor-ngsreports
+    - mosdepth
+    - multiqc
+    - nextflow
+    - r-ggplot2
+    - r-gplots
+    - r-gsalib
+    - r-argparse
+    - rna-seqc
+    - ribodetector
+    - python==3.9
+    - bx-python
+    - pip
+    - r-biocmanager
+    - bioconductor-biocstyle 
+    - r-dygraphs
+    - r-r.utils
+    - gnuplot
+    - samtools
+    - sortmerna
+    - seqkit
