@@ -19,3 +19,9 @@ To achieve the above mentioned task using awk
 ```
 split_bam.py -i 1099_S21_L001Aligned.sortedByCoord.out.bam  -r rrna_mod.bed -o output 1> output.txt
 ```
+
+## Command to run
+
+```
+nextflow run main.nf --input 'data/*R{1,2}_001.fastq.gz' --outdir shuaibs_results --ref /home/subudhak/Documents/sara_samples/Iseq_COVID_batch2_and3_corrected_index/RNAgrinder/resources/GRCh38.primary_assembly.genome.fa --gtf /home/subudhak/Documents/sara_samples/Iseq_COVID_batch2_and3_corrected_index/RNAgrinder/resources/gencode.v43.primary_assembly.basic.annotation.gtf --mode PE --rrnaUse ribodetector --index_dir results/00_index/
+```
