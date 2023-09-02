@@ -22,7 +22,7 @@ Input:
 	* --rrnaUse: Choose algorithm to detect rRNA. Possible Values: "ribodetector","sortmerna". Default [${params.rrnaUse}]
 	* --indexing: Set this true to index reference genome on the fly. Default [${params.indexing}]
 	* --index_dir: Provide path to director where STAR indexes are stored. Use this argument when --indexing is set to false.
-	Default [${params.index_dir}] 
+	Default [${params.index_dir}]
 
 	#### Parameters to pass additional Arguments ####
 	* --opticalDupPixalDis: Alter the optical duplicate pixel distance according to the Flow-Cell used.
@@ -36,7 +36,7 @@ Input:
 	#### Parameters to Skip certain Steps ####
 	* --skipTrim: Set this "true" to skip Trimming Step. Default [${params.skipTrim}]
 	* --skipAlignment: Set this "true" to skip Alignment Step. Default [${params.skipAlignment}]
-	
+
 """
 
 exit 0
@@ -65,7 +65,7 @@ if (params.input != false){
 		Channel.fromFilePairs(params.input, checkIfExists: true )
 		.set { input_fastqs }
 		} else if (params.mode == "SE") {
-			Channel.fromPath(params.input, checkIfExists: true )
+			Channel.fromPath(params.input, checkIfExists: true ).map { file -> tuple(file.simpleName, file)}
 			.set { input_fastqs }
 	}
 }
@@ -100,12 +100,12 @@ if (params.skipTrim){
 		//SORTMERNA(input_fastqs)
 		//COMMON_READS()
 		} else {
-		FASTP(input_fastqs)
-		POSTTRIMFASTQC(FASTP.out[0])
-		postrim_input=POSTTRIMFASTQC.out.postfastqc.collect()
-		POSTTRIM("02_adapterTrimming",postrim_input,'post-trimming')
-		RIBODETECTOR(FASTP.out[0])
-		
+
+        FASTP(input_fastqs)
+        POSTTRIMFASTQC(FASTP.out[0])
+        postrim_input=POSTTRIMFASTQC.out.postfastqc.collect()
+        POSTTRIM("02_adapterTrimming",postrim_input,'post-trimming')
+        RIBODETECTOR(FASTP.out[0])
 		//COMMON_READS()
 }
 
@@ -145,5 +145,6 @@ if (params.skipTrim == true && params.skipAlignment == true ){
 	all_combine=BAMSTATS.out[0].mix(MARKDUP.out.dedupmtx,STAR.out.star_logs,RNASEQC.out[0],FASTP.out.fastp_logs)
 	SUMMARISEALL("Summary_Reports",all_combine.collect(),'summary_report')
 	}
-}
 
+
+}
