@@ -24,7 +24,7 @@ shell:
 if ("${params.mode}" == "PE")
 '''
 
-id=$(zcat !{reads[0]} | head -n 1 | cut -f 3-4 -d":" | sed 's/@//')
+id=$(zcat !{reads[0]} | head -n 1 | cut -f 3-4 -d":" | sed 's/@//'| awk '{print $1}')
 echo ${id}
 STAR --genomeDir !{index.toRealPath()} --runThreadN !{task.cpus} \
 --alignIntronMax 1000000 \
@@ -55,6 +55,8 @@ STAR --genomeDir !{index.toRealPath()} --runThreadN !{task.cpus} \
 --quantMode TranscriptomeSAM GeneCounts \
 --readFilesCommand zcat \
 --readFilesIn !{reads[0]} !{reads[1]} \
+--limitBAMsortRAM 1276368436\
+--outBAMsortingBinsN 200 \
 --sjdbGTFfile !{params.gtf}  \
 --sjdbScore 1 2> !{sid}.stderr
 
@@ -66,6 +68,8 @@ STAR --genomeDir !{index.toRealPath()} --runThreadN !{task.cpus} \
 '''
 else if ("${params.mode}" == "SE")
 '''
+id=$(zcat !{reads[0]} | head -n 1 | cut -f 3-4 -d":" | sed 's/@//'| awk '{print $1}')
+echo ${id}
 STAR --genomeDir !{index} --runThreadN !{task.cpus} \
 --alignIntronMax 1000000 \
 --alignIntronMin 20 \
@@ -90,6 +94,7 @@ STAR --genomeDir !{index} --runThreadN !{task.cpus} \
 --outSAMattributes All \
 --outSAMtype BAM SortedByCoordinate \
 --outSAMunmapped Within \
+--outSAMattrRGline ID:${id} SM:!{sid} PL:ILLUMINA \
 --quantMode TranscriptomeSAM GeneCounts \
 --readFilesCommand zcat \
 --readFilesIn !{reads[0]} \
