@@ -14,7 +14,7 @@ input:
         each path(index)
 
 output:
-tuple val(sid), path("*fastq.gz")
+//tuple val(sid), path("*fastq.gz")
 tuple val(sid), path("${sid}_Aligned.sortedByCoord.out.bam"), emit: genomic_bam
 path("${sid}_Aligned.toTranscriptome.out.bam")
 path("*.out"), emit: star_logs
@@ -58,10 +58,11 @@ STAR --genomeDir !{index.toRealPath()} --runThreadN !{task.cpus} \
 --sjdbGTFfile !{params.gtf}  \
 --sjdbScore 1 2> !{sid}.stderr
 
-mv !{sid}_Unmapped.out.mate1 !{sid}_unmapped_R1.fastq
-mv !{sid}_Unmapped.out.mate2 !{sid}_unmapped_R2.fastq
-gzip !{sid}_unmapped_R1.fastq
-gzip !{sid}_unmapped_R2.fastq
+## Disabling the output of unmapped reads momentarily
+#mv !{sid}_Unmapped.out.mate1 !{sid}_unmapped_R1.fastq
+#mv !{sid}_Unmapped.out.mate2 !{sid}_unmapped_R2.fastq
+#gzip !{sid}_unmapped_R1.fastq
+#gzip !{sid}_unmapped_R2.fastq
 '''
 else if ("${params.mode}" == "SE")
 '''
@@ -94,8 +95,8 @@ STAR --genomeDir !{index} --runThreadN !{task.cpus} \
 --readFilesIn !{reads[0]} \
 --sjdbGTFfile !{params.gtf} \
 --sjdbScore 1 2> !{sid}.stderr
-mv !{sid}_Unmapped.out.mate !{sid}_unmapped.fastq
-gzip !{sid}_unmapped.fastq
+#mv !{sid}_Unmapped.out.mate !{sid}_unmapped.fastq
+#gzip !{sid}_unmapped.fastq
 '''
 }
 
@@ -116,7 +117,7 @@ process KRAKEN{
   #bracken -r ${params.readlen} -d ${params.db} -i ${sid}_kraken_report.txt -o ${sid}_bracken_report.txt -w ${sid}_kraken_bracken.report
 	"""
 else if ("${params.mode}" == "SE")
-""" 
+"""
         kraken2 --threads ${task.cpus} --confidence 0.1 --db ${params.db}  \
   ${reads[0]} --output ${sid} --report-minimizer-data \
   --report ${sid}_kraken_report.txt --gzip-compressed --unclassified-out ${sid}_unclassified#.fasta
@@ -124,4 +125,3 @@ else if ("${params.mode}" == "SE")
 
 """
 }
-

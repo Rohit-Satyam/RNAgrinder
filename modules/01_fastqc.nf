@@ -15,7 +15,8 @@ process FASTQC{
         path "*", emit: fastqc
 def fastqc_ext = params.fastqc_ext ? params.fastqc_ext : ''
     """
-    fastqc -t ${task.cpus} $fastqc_ext ${reads[0]} ${reads[1]}
+##    fastqc -t ${task.cpus} $fastqc_ext ${reads[0]} ${reads[1]}
+      fastqc -t ${task.cpus} $fastqc_ext ${reads}
     """
 }
 
