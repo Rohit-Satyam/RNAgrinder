@@ -32,3 +32,5 @@ dependencies:
     - samtools
     - sortmerna
     - seqkit
+    - pip:
+        - bx
