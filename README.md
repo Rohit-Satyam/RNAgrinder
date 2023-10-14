@@ -8,8 +8,8 @@ can do do and provide the index directory path using `--index_dir`.
 
 **Note for non GENCODE GTF users** 
 If using GTF file for any other organism other than Human, please check if the `transcript_type` and `gene_type` tags are present in the GTF. Though these tags are not required by STAR,
-they are required by `gtexCollapseAnnotation.py` to alter GTF file used by RNASeQC. For example Plasmodium GTF file (GTF file produced from GFF using `AGAT`), the above mentioned 
-tags are usualy missing and can be added as follows
+they are required by `gtexCollapseAnnotation.py` to alter GTF file used by RNASeQC. For example, in Plasmodium GTF file (GTF file produced from GFF using `AGAT`), the above mentioned 
+tags are usualy missing and can be added as follows (as per discussion [here](https://github.com/NBISweden/AGAT/issues/398)
 
 ```
 sed -i 's/gene_ebi_biotype/transcript_type/g'  PlasmoDB-64_Pfalciparum3D7.gtf
