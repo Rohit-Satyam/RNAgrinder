@@ -33,3 +33,24 @@ nextflow run main.nf --input 'data_se/*.fastq.gz'
 --gtf /home/subudhak/Documents/amit_timeseries_redo/reference/PlasmoDB-64_Pfalciparum3D7.gtf \
 --mode SE --rrnaUse ribodetector --index_dir 00_index/
 ```
+
+## How to run multiple samples on IBEX using pipeline
+Submitting all samples using nextflow using regex `*R{1,2}*` will still be time consuming no matter how many worker threads you use. So I use divide and conquer strategy. I fire a separate job for each samples as followd
+
+**Step1**
+```
+## Create the input file list
+ls -1 /ibex/scratch/projects/c2077/rohit/sara_novaseq/210801_A01018_0104_AHG7JCDSXY/Lane1/version_01/*R1*.gz > file
+sed -i 's/_R1_/_*R{1,2}_/g' file
+```
+
+**Step2**
+To fire multiple jobs we will use while loop
+
+```
+while read p
+do
+n=$(echo $p | xargs -n 1 basename | awk -F'_L001' '{print $1}')
+sbatch -N 1 -J ${n}_lane1 --mem=100G --time=1-24:00 --cpus-per-task 12 --mail-user=rohit.satyam@kaust.edu.sa --mail-type=FAIL --partition=batch -o ${n}.out -e ${n}.err --wrap="nextflow run main.nf --input '$p' --outdir results_lane1 --ref /ibex/scratch/projects/c2077/rohit/RNAgrinder/resources/GRCh38.primary_assembly.genome.fa --gtf /ibex/scratch/projects/c2077/rohit/RNAgrinder/resources/gencode.v43.primary_assembly.basic.annotation.gtf --mode PE --rrnaUse ribodetector --index_dir /ibex/scratch/projects/c2077/rohit/RNAgrinder/resources/00_index/ --cpus 12 -w ${n}_work"
+done < file
+```
