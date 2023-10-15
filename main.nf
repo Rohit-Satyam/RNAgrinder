@@ -20,7 +20,6 @@ Input:
 	* --gtf: Path to reference GTF file. Default [${params.ref}]
 	* --mode: If data is Paired-end pass "PE" else "SE". Default [${params.mode}]
 	* --rrnaUse: Choose algorithm to detect rRNA. Possible Values: "ribodetector","sortmerna". Default [${params.rrnaUse}]
-	* --indexing: Set this true to index reference genome on the fly. Default [${params.indexing}]
 	* --index_dir: Provide path to director where STAR indexes are stored. Use this argument when --indexing is set to false.
 	Default [${params.index_dir}]
 
