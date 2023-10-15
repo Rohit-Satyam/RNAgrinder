@@ -55,7 +55,7 @@ STAR --genomeDir !{index.toRealPath()} --runThreadN !{task.cpus} \
 --quantMode TranscriptomeSAM GeneCounts \
 --readFilesCommand zcat \
 --readFilesIn !{reads[0]} !{reads[1]} \
---limitBAMsortRAM 1276368436\
+!{params.staralign_ext}\
 --outBAMsortingBinsN 200 \
 --sjdbGTFfile !{params.gtf}  \
 --sjdbScore 1 2> !{sid}.stderr
@@ -98,6 +98,7 @@ STAR --genomeDir !{index} --runThreadN !{task.cpus} \
 --quantMode TranscriptomeSAM GeneCounts \
 --readFilesCommand zcat \
 --readFilesIn !{reads[0]} \
+!{params.staralign_ext}\
 --sjdbGTFfile !{params.gtf} \
 --sjdbScore 1 2> !{sid}.stderr
 #mv !{sid}_Unmapped.out.mate !{sid}_unmapped.fastq
