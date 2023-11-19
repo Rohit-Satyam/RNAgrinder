@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/625192845.svg)](https://zenodo.org/doi/10.5281/zenodo.10156612)
+
 # RNAgrinder
 A nextflow workflow for RNA-Seq Data assessment
 
