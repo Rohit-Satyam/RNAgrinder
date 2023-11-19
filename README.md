@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/625192845.svg)](https://zenodo.org/doi/10.5281/zenodo.10156612)
+[![DOI](https://zenodo.org/badge/625192845.svg)](https://zenodo.org/doi/10.5281/zenodo.10156612) <br>
 If you use this pipeline, please cite it using
 
 ```
