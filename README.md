@@ -4,7 +4,8 @@ A nextflow workflow for RNA-Seq Data assessment
 
 # Preparing the Input Files 
 Usually no preparation is required for running the pipeline but if you want to index your genome using STAR custom indexing parameters like `--sjdbOverhang`, you 
-can do do and provide the index directory path using `--index_dir`.
+can do do and provide the index directory path using `--index_dir`. For GENCODE genomes, no editing of GTF files are required, but for non-model organisms, perform 
+some gtf editing such as example shown below:
 
 **Note for non GENCODE GTF users** 
 If using GTF file for any other organism other than Human, please check if the `transcript_type` and `gene_type` tags are present in the GTF. Though these tags are not required by STAR,
