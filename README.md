@@ -19,9 +19,10 @@ If using GTF file for any other organism other than Human, please check if the `
 they are required by `gtexCollapseAnnotation.py` to alter GTF file used by RNASeQC. For example, in Plasmodium GTF file (GTF file produced from GFF using `AGAT`), the above mentioned 
 tags are usualy missing and can be added as follows (as per discussion [here](https://github.com/NBISweden/AGAT/issues/398)
 
-```
-sed -i 's/gene_ebi_biotype/transcript_type/g'  PlasmoDB-64_Pfalciparum3D7.gtf
-sed -i 's/ebi_biotype/gene_type/g'  PlasmoDB-64_Pfalciparum3D7.gtf
+```bash
+agat_convert_sp_gff2gtf.pl -gff PlasmoDB-66_Pfalciparum3D7.gff -o PlasmoDB-66_Pfalciparum3D7.gtf --gtf_version 3
+sed -i 's/gene_ebi_biotype/transcript_type/g'  PlasmoDB-66_Pfalciparum3D7.gtf
+sed -i 's/ebi_biotype/gene_type/g'  PlasmoDB-66_Pfalciparum3D7.gtf
 ```
 
 
