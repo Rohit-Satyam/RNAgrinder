@@ -1,9 +1,4 @@
-[![DOI](https://zenodo.org/badge/625192845.svg)](https://zenodo.org/doi/10.5281/zenodo.10156612) <br>
-If you use this pipeline, please cite it using
 
-```
-Rohit Satyam. (2023). Rohit-Satyam/RNAgrinder: v1.0.0 (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.10156613
-```
 
 # RNAgrinder
 A nextflow workflow for RNA-Seq Data assessment
