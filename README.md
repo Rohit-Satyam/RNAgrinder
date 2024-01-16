@@ -45,7 +45,10 @@ nextflow run main.nf --input 'data_se/*.fastq.gz'
 If you wanna run Kraken2 and Braken as well on your dataset to get a metagenomic blueprint, you can enable the Kraken2 classification as follows:
 
 ```bash
-sbatch -N 1 -J sarasJob --mem=350G --time=3-24:00 --cpus-per-task=120 --mail-user=rohit.satyam@kaust.edu.sa --mail-type=FAIL --partition=batch -o sara.out -e sara.err --wrap="nextflow run main.nf --input 'data/*_L001_R{1,2}_001.fastq.gz' --outdir results --mode PE --cpus 120 --k2db /ibex/scratch/projects/c2077/rohit/backup_runs/RNAgrinder/kraken2/index --ref $PWD/resources/PlasmoDB-66_Pfalciparum3D7_Genome.fasta --gtf $PWD/resources/PlasmoDB-66_Pfalciparum3D7.gtf"
+sbatch -N 1 -J sarasJob --mem=350G --time=3-24:00 --cpus-per-task=120 --mail-user=rohit.satyam@kaust.edu.sa --mail-type=FAIL \
+--partition=batch -o sara.out -e sara.err --wrap="nextflow run main.nf --input 'data/*_L001_R{1,2}_001.fastq.gz' --outdir results \
+ --mode PE --cpus 120 --k2db /ibex/scratch/projects/c2077/rohit/backup_runs/RNAgrinder/kraken2/index \
+--ref $PWD/resources/PlasmoDB-66_Pfalciparum3D7_Genome.fasta --gtf $PWD/resources/PlasmoDB-66_Pfalciparum3D7.gtf"
 
 ```
 However, you must first download the indexes of your interest (here we use PlusPF since that's the most comprehensive database) from their [webpage](https://benlangmead.github.io/aws-indexes/k2).
