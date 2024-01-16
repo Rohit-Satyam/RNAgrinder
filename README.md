@@ -1,3 +1,9 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10518597.svg)](https://doi.org/10.5281/zenodo.10518597) <br>
+If you use this pipeline, please cite it using
+
+```
+Rohit Satyam. (2024). Rohit-Satyam/RNAgrinder: v1.0.1 (v1.0.1). Zenodo. https://doi.org/10.5281/zenodo.10518597
+```
 
 ![](pipeline.png)
 
