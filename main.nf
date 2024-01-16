@@ -102,7 +102,7 @@ if (params.index_dir == "" && params.skipAlignment == false){
 
 if (params.skipTrim == false){
         FASTP(input_fastqs)
-	FASTP.out[0].view()
+	FASTP.out[0]
         POSTTRIMFASTQC(FASTP.out[0])
         postrim_input=POSTTRIMFASTQC.out.postfastqc.collect()
         POSTTRIM("02_adapterTrimming",postrim_input,'post-trimming')
