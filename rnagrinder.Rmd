@@ -17,13 +17,14 @@ knitr::opts_chunk$set(
 
 
 ```{r}
-ribodetector <- plyr::ldply(lapply(list.files(pattern = "*ribodetector*"), function(x){read.csv(x,header = F, col.names = c("Sample","Total-Reads","rRna","non-rRNA"), check.names = F)}))
+ribodetector <- plyr::ldply(lapply(list.files(path = "results/rRNA/ribodetector/",pattern = "*_ribodetector_results.txt*",full.names = TRUE), function(x){read.csv(x,header = F, col.names = c("Sample","Total-Reads","rRna","non-rRNA"), check.names = F)}))
 
 #sortmerna <- plyr::ldply(lapply(list.files(pattern = "*sortmerna*"), function(x){read.csv(x,header = F,col.names = c("Sample","Total-Reads","rRna","non-rRNA"), check.names = F)}))
 
 #seqkit <- read.table("summary.tsv", sep = "\t")
+temp <- list.files(path="results/02_adapterTrimming",pattern = "*fastp.txt", full.names =TRUE)[!grepl("L001",list.files(path="results/02_adapterTrimming",pattern = "*fastp.txt", full.names =TRUE))]
 
-fastp <- plyr::ldply(lapply(list.files(pattern = "*fastp*"), function(x){read.csv(x,header = F,col.names = c("Sample","Total-Reads","After-Trimming"), check.names = F)}))
+fastp <- plyr::ldply(lapply(temp, function(x){read.csv(x,header = F,col.names = c("Sample","Total-Reads","After-Trimming"), check.names = F)}))
 table(fastp$Sample==ribodetector$Sample)
 df <- cbind(fastp,ribodetector[3:4])
 df2 <- data.frame(Samples=df[,1],
@@ -41,15 +42,16 @@ colnames(df2) <- c("Samples","Total Reads","Survied post Trimming","Read loss(%)
 
 ```{r}
 library(ngsReports)
-l <- list.files(pattern = "Log.final.out")
+l <- list.files(path="results/04_alignment/star/",pattern = "Log.final.out", full.names = TRUE)
 star <- importNgsLogs(l, type = "star")
 star$Filename <- gsub("_Log.final.out","",star$Filename)
-l <- list.files(pattern = "dedup.bam.metrics")
+l <- list.files(path="results/06_bamStats/",pattern = "dedup.bam.metrics",full.names = TRUE)
 rnaseqc <- lapply(l, function(x){
   t(read.csv(x,header = T, sep = "\t", row.names = 1, check.names = F))
 })
 names(rnaseqc) <- gsub(".dedup.bam.metrics.tsv","",l)
 rnaseqc <- plyr::ldply(rnaseqc)
+rnaseqc$`rRNA Rate` <- rnaseqc$`rRNA Rate`*100
 rnaseqc$`Duplicate Rate of Mapped` <- rnaseqc$`Duplicate Rate of Mapped`*100
 table(df2$Samples==star$Filename)
 
@@ -58,5 +60,5 @@ df3$Duplicate_Reads <- round(rnaseqc$`Duplicate Reads`/2)
 colnames(df3) <- c("Samples","Total Reads","Survied post Trimming","Read loss(%)","rRNA",
                    "rRNA (%)","non-rRNA reads","non-rRNA (%)","Total Mapped(%)",
                    "Unique Mapped Reads","Unique Mapped Rate","No. of Genes Detected","rRNA Rate (Post Alignment)","Duplicate (%)","Duplicate Reads")
-write.csv(df3,"shuaibs.csv")
+write.csv(df3,"saras_summary.csv")
 ```
