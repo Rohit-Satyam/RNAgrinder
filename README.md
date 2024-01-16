@@ -1,5 +1,5 @@
 
-![]("./pipeline.png")
+![](pipeline.png)
 
 A nextflow workflow for RNA-Seq Data assessment
 
