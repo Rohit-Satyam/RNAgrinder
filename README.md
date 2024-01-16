@@ -10,14 +10,14 @@ A nextflow workflow for RNA-Seq Data assessment
 
 
 # Preparing the Input Files 
-Usually no preparation is required for running the pipeline but if you want to index your genome using STAR custom indexing parameters like `--sjdbOverhang`, you 
-can do do and provide the index directory path using `--index_dir`. For GENCODE genomes, no editing of GTF files are required, but for non-model organisms, perform 
-some gtf editing such as example shown below:
+Usually, no preparation is required for running the pipeline but if you want to index your genome using STAR custom indexing parameters like `--sjdbOverhang`, you 
+can do so and provide the index directory path using `--index_dir`. For GENCODE genomes, no editing of GTF files are required, but for non-model organisms, perform 
+some GTF editing such as the example shown below:
 
-**Note for non GENCODE GTF users** 
-If using GTF file for any other organism other than Human, please check if the `transcript_type` and `gene_type` tags are present in the GTF. Though these tags are not required by STAR,
-they are required by `gtexCollapseAnnotation.py` to alter GTF file used by RNASeQC. For example, in Plasmodium GTF file (GTF file produced from GFF using `AGAT`), the above mentioned 
-tags are usualy missing and can be added as follows (as per discussion [here](https://github.com/NBISweden/AGAT/issues/398)
+**Note for non-GENCODE GTF users** 
+If using the GTF file for any other organism other than Humans, please check if the `transcript_type` and `gene_type` tags are present in the GTF. Though these tags are not required by STAR,
+they are required by `gtexCollapseAnnotation.py` to alter the GTF file used by RNASeQC. For example, in the Plasmodium GTF file (GTF file produced from GFF using `AGAT`), the above mentioned 
+tags are usually missing and can be added as follows (as per discussion [here](https://github.com/NBISweden/AGAT/issues/398)
 
 ```bash
 agat_convert_sp_gff2gtf.pl -gff PlasmoDB-66_Pfalciparum3D7.gff -o PlasmoDB-66_Pfalciparum3D7.gtf --gtf_version 3
@@ -39,12 +39,18 @@ For **SE Data**
 ```
 nextflow run main.nf --input 'data_se/*.fastq.gz'
 --outdir results --ref /home/subudhak/Documents/amit_timeseries_redo/reference/PlasmoDB-64_Pfalciparum3D7_Genome.fasta \
---gtf /home/subudhak/Documents/amit_timeseries_redo/reference/PlasmoDB-64_Pfalciparum3D7.gtf \
+--gtf /home/subudhak/Documents/amit_timeseries_redo/reference/PlasmoDB-66_Pfalciparum3D7.gtf \
 --mode SE --rrnaUse ribodetector --index_dir 00_index/
 ```
+If you wanna run Kraken2 and Braken as well on your dataset to get a metagenomic blueprint, you can enable the Kraken2 classification as follows:
 
-## How to run multiple samples on IBEX using pipeline
-Submitting all samples using nextflow using regex `*R{1,2}*` will still be time consuming no matter how many worker threads you use. So I use divide and conquer strategy. I fire a separate job for each samples as followd
+```bash
+sbatch -N 1 -J sarasJob --mem=350G --time=3-24:00 --cpus-per-task=120 --mail-user=rohit.satyam@kaust.edu.sa --mail-type=FAIL --partition=batch -o sara.out -e sara.err --wrap="nextflow run main.nf --input 'data/*_L001_R{1,2}_001.fastq.gz' --outdir results --mode PE --cpus 120 --k2db /ibex/scratch/projects/c2077/rohit/backup_runs/RNAgrinder/kraken2/index --ref $PWD/resources/PlasmoDB-66_Pfalciparum3D7_Genome.fasta --gtf $PWD/resources/PlasmoDB-66_Pfalciparum3D7.gtf"
+
+```
+However, you must first download the indexes of your interest (here we use PlusPF since that's the most comprehensive database) from their [webpage](https://benlangmead.github.io/aws-indexes/k2).
+## How to run multiple samples on IBEX using a pipeline
+Submitting all samples using nextflow using regex `*R{1,2}*` will still be time-consuming no matter how many worker threads you use. So I use the divide and conquer strategy. I fire a separate job for each sample as followed
 
 **Step1**
 ```
