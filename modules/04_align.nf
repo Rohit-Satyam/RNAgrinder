@@ -107,27 +107,28 @@ STAR --genomeDir !{index} --runThreadN !{task.cpus} \
 }
 
 process KRAKEN{
-	publishDir "${params.outdir}/04_alignment/kraken", mode: 'copy'
-	maxForks params.jobs
-	cpus params.cpus
-	input:
-	tuple val(sid), path(reads)
-	output:
-	file "*"
-	script:
+        publishDir "${params.outdir}/07_kraken", mode: 'copy'
+        maxForks params.jobs
+        cpus params.cpus
+        input:
+        tuple val(sid), path(reads)
+        output:
+        path "*"
+        script:
         if ("${params.mode}" == "PE")
-	"""
-	kraken2 --threads ${task.cpus} --confidence 0.1 --paired --db ${params.db}  \
+        """
+kraken2 --threads ${task.cpus} --confidence 0.1 --paired --db ${params.k2db}  \
   ${reads[0]} ${reads[1]} --output ${sid} --report-minimizer-data \
   --report ${sid}_kraken_report.txt --gzip-compressed --unclassified-out ${sid}_unclassified#.fasta
-  #bracken -r ${params.readlen} -d ${params.db} -i ${sid}_kraken_report.txt -o ${sid}_bracken_report.txt -w ${sid}_kraken_bracken.report
-	"""
+bracken -r ${params.readlen} -d ${params.k2db} -i ${sid}_kraken_report.txt -o ${sid}_bracken_report.txt -w ${sid}_kraken_bracken.report
+        """
 else if ("${params.mode}" == "SE")
 """
-        kraken2 --threads ${task.cpus} --confidence 0.1 --db ${params.db}  \
+kraken2 --threads ${task.cpus} --confidence 0.1 --db ${params.k2db}  \
   ${reads[0]} --output ${sid} --report-minimizer-data \
   --report ${sid}_kraken_report.txt --gzip-compressed --unclassified-out ${sid}_unclassified#.fasta
-  #bracken -r ${params.readlen} -d ${params.db} -i ${sid}_kraken_report.txt -o ${sid}_bracken_report.txt -w ${sid}_kraken_bracken.report
+bracken -r ${params.readlen} -d ${params.k2db} -i ${sid}_kraken_report.txt -o ${sid}_bracken_report.txt -w ${sid}_kraken_bracken.report
 
 """
 }
+
