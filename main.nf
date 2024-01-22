@@ -14,7 +14,7 @@ Usage:
 	--indexing ${params.indexing}
 Input:
 	#### Mandatory Arguments ####
-	* --gtf: Path to reference GTF file. Default [${params.ref}]
+	* --gtf: Path to reference GTF file. Default [${params.gtf}]
 	* --index_dir: Provide path to director where STAR indexes are stored. Use this argument when --indexing is set to false.
 	* --input: Path to FastqQ files. Default [${params.input}]
 	* --mode: If data is Paired-end pass "PE" else "SE". Default [${params.mode}]
