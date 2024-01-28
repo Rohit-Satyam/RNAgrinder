@@ -9,6 +9,18 @@ Rohit Satyam. (2024). Rohit-Satyam/RNAgrinder: v1.0.1 (v1.0.1). Zenodo. https://
 
 A nextflow workflow for RNA-Seq Data assessment
 
+# Procure the data
+If you have your own data good. But if you don't and wanna fetch data from SRA, here is a way to do it quickly and efficiently using `fasterq-dump`, `parallel` and `pysradb`
+
+```bash
+## eg. First convert your GSE ID to SRP and then use it to get SRR ID of the entire project
+pysradb gse-to-srp  GSE243125
+pysradb srp-to-srr SRP460304 > meta.tsv
+
+## now choose the SRR IDs you wanna download from meta.tsv and save them as srr.txt
+## The use fasterq-dump and parallel
+cat srr.txt | parallel -j 5 "fasterq-dump -e 20 --skip-technical --split-3 -p {}"
+```
 
 # Preparing the Input Files 
 Usually, no preparation is required for running the pipeline but if you want to index your genome using STAR custom indexing parameters like `--sjdbOverhang`, you 
