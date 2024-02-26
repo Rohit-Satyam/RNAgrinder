@@ -85,3 +85,36 @@ n=$(echo $p | xargs -n 1 basename | awk -F'_L001' '{print $1}')
 sbatch -N 1 -J ${n}_lane1 --mem=100G --time=1-24:00 --cpus-per-task 12 --mail-user=rohit.satyam@kaust.edu.sa --mail-type=FAIL --partition=batch -o ${n}.out -e ${n}.err --wrap="nextflow run main.nf --input '$p' --outdir results_lane1 --ref /ibex/scratch/projects/c2077/rohit/RNAgrinder/resources/GRCh38.primary_assembly.genome.fa --gtf /ibex/scratch/projects/c2077/rohit/RNAgrinder/resources/gencode.v43.primary_assembly.basic.annotation.gtf --mode PE --rrnaUse ribodetector --index_dir /ibex/scratch/projects/c2077/rohit/RNAgrinder/resources/00_index/ --cpus 12 -w ${n}_work"
 done < file
 ```
+
+# To do list
+1. Add library strandedness determination capability. Read https://groups.google.com/g/rna-star/c/mkooNLzyJYc and https://github.com/alexdobin/STAR/issues/1589 and try this tool: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-022-04572-7
+Tentative code
+```
+#!/bin/bash
+
+# Loop through all ReadsPerGene.out.tab files in the current directory
+for file in *.ReadsPerGene.out.tab; do
+    echo "Processing $file..."
+    # Calculate sums for each stranded column (assuming columns 2, 3, and 4 are unstranded, stranded-forward, and stranded-reverse, respectively)
+    unstranded_sum=$(awk '{if(NR>4) sum+=$2} END {print sum}' $file)
+    forward_stranded_sum=$(awk '{if(NR>4) sum+=$3} END {print sum}' $file)
+    reverse_stranded_sum=$(awk '{if(NR>4) sum+=$4} END {print sum}' $file)
+    
+    # Compare the sums to infer strandedness
+    if (( $(echo "$forward_stranded_sum > $reverse_stranded_sum" | bc -l) )); then
+        strandedness="forward"
+        column=3
+    elif (( $(echo "$reverse_stranded_sum > $forward_stranded_sum" | bc -l) )); then
+        strandedness="reverse"
+        column=4
+    else
+        strandedness="unstranded"
+        column=2
+    fi
+    
+    # Output the decision
+    echo "$file: Use column $column ($strandedness stranded)"
+done
+
+```
+2. Add Gender recognition capability using https://rpubs.com/seungyeul/471026
