@@ -8,7 +8,7 @@ process RIBODETECTOR{
 cpus params.cpus
 maxForks params.jobs
 
-publishDir "${params.outdir}/rRNA/ribodetector", mode: 'copy'
+publishDir "${params.outdir}/03_rRNAdepletion/", mode: 'copy'
         input:
                 //tuple val(sid), path(reads)
                 tuple val(sid), path(reads)
