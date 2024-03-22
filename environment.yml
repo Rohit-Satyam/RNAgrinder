@@ -12,6 +12,8 @@ dependencies:
     - samtools
     - csvtk
     - bioconductor-ngsreports
+    - kraken2
+    - bracken
     - mosdepth
     - multiqc
     - nextflow
