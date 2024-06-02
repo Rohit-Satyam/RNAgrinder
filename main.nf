@@ -15,14 +15,13 @@ Usage:
 Input:
 	#### Mandatory Arguments ####
 	* --gtf: Path to reference GTF file. Default [${params.gtf}]
-	* --index_dir: Provide path to director where STAR indexes are stored. Use this argument when --indexing is set to false.
+	* --index_dir: Provide path to director where STAR indexes are stored. Use this argument when --indexing is set to false. Default [${params.index_dir}]
 	* --input: Path to FastqQ files. Default [${params.input}]
 	* --mode: If data is Paired-end pass "PE" else "SE". Default [${params.mode}]
 	* --outdir: Path/Name of the output directory. Default [${params.outdir}]
 	* --ref: Path to reference fasta file. Default [${params.ref}]
 	* --rrnaUse: Choose algorithm to detect rRNA. Possible Values: "ribodetector","sortmerna". Default [${params.rrnaUse}]
 	
-	Default [${params.index_dir}]
 
 	#### Parameters to pass additional Arguments ####
 	* --fastp_ext: Additional arguments to pass to FASTP. Default [${params.fastp_ext}]
