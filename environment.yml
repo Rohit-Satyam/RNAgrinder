@@ -4,6 +4,7 @@ channels:
     - bioconda
     - defaults
 dependencies:
+    - rna-seqc
     - star=2.7.11a
     - picard=2.27.4
     - bioawk=1.0
@@ -16,20 +17,11 @@ dependencies:
     - bracken=2.9
     - mosdepth=0.3.3
     - multiqc=1.21
-    - nextflow
-    - r-ggplot2
-    - r-gplots
-    - r-gsalib
-    - r-argparse
-    - rna-seqc
+    - nextflow=23.10.1
     - ribodetector=0.3.1
-    - python==3.9
+    - python==3.10
     - bx-python
     - pip=24.0
-    - r-biocmanager
-    - bioconductor-biocstyle 
-    - r-dygraphs
-    - r-r.utils
     - gnuplot=5.0.3
     - sortmerna=4.3.6
     - seqkit=2.8.0
