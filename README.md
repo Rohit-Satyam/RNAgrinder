@@ -42,19 +42,59 @@ sed -i 's/ebi_biotype/gene_type/g'  PlasmoDB-66_Pfalciparum3D7.gtf
 
 We will document here steps to convert the lncRNA annotation available publically for Plasmodium falciparum 3D7 and Toxoplasma gondii ME49 and how can be liftover these annotations using `Liftoff` tool.
 
-### Toxoplasma
+### For Toxoplasma
 ```
 # Because the annotation were generated from StringTie, the gene records were missing from GFF files. To add that, we will first use AGAT to fix this
 agat_convert_sp_gxf2gxf.pl -g Toxolncrna_v59.gff -o fixed.gff
 liftoff -g fixed.gff -o Toxolncrna_v68.gff  ToxoDB-68_TgondiiME49_Genome.fasta ToxoDB-59_TgondiiME49_Genome.fasta
+## Replace "gene" and "transcript" with ncRNA_gene and lnc_RNA to match ToxoDB standards. Also, adding other descriptions
+awk 'BEGIN{OFS="\t"}
+$3 == "gene" { $9 = $9 ";description=lncRNA;ebi_biotype=lncRNA" } 
+$3 == "transcript" { $9 = $9 ";description=lncRNA;gene_ebi_biotype=lncRNA" } 
+{ print }' Toxolncrna_v68.gff > temp.gff
+
+awk 'BEGIN{OFS="\t"} $3 == "gene" {$3 = "ncRNA_gene"} $3 == "transcript" {$3 = "lnc_RNA"} {print}' temp.gff
+
+## Now let's fix the exon naming record since AGAT assigns a random name in the ID field if the exon name is missing, eg: agat-exon-1577. 
+awk 'BEGIN{OFS="\t"} 
+$3 == "exon" { 
+    split($9, fields, ";"); 
+    for (i in fields) {
+        if (fields[i] ~ /^ID=/) {
+            id_index = i;
+        } else if (fields[i] ~ /^Parent=/) {
+            split(fields[i], parent, "=");
+            parent_value = parent[2];
+        } else if (fields[i] ~ /^exon_number=/) {
+            split(fields[i], exon_number, "=");
+            exon_value = exon_number[2];
+        }
+    }
+    if (id_index && parent_value && exon_value) {
+        fields[id_index] = "ID=exon_" parent_value "-E" exon_value;
+    }
+    $9 = "";
+    for (i = 1; i <= length(fields); i++) {
+        if (fields[i] != "") {
+            $9 = $9 ? $9 ";" fields[i] : fields[i];
+        }
+    }
+}{ print }' revised.gff > ready2merge.gff
+ 
 ```
-> Now the lncRNA genes are tagged as ncRNA_gene at gene level and lnc_RNA at transcript level
+Reference:
 ```
 grep TGME49_500145 ToxoDB-68_TgondiiME49.gff
 TGME49_chrVIIb	VEuPathDB	ncRNA_gene	1614480	1617748	.	+	.	ID=TGME49_500145;description=lncRNA;ebi_biotype=lncRNA
 TGME49_chrVIIb	VEuPathDB	lnc_RNA	1614480	1617748	.	+	.	ID=TGME49_500145.R149;Parent=TGME49_500145;description=lncRNA;gene_ebi_biotype=lncRNA
 TGME49_chrVIIb	VEuPathDB	exon	1614480	1617748	.	+	.	ID=exon_TGME49_500145.R149-E1;Parent=TGME49_500145.R149;gene_id=TGME49_500145
 ```
+The ready2merge.gff looks like
+
+```
+
+```
+
 
 ## Command to run
 For **PE Data**
