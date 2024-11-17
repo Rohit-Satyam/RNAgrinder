@@ -92,6 +92,13 @@ TGME49_chrVIIb	VEuPathDB	exon	1614480	1617748	.	+	.	ID=exon_TGME49_500145.R149-E
 The ready2merge.gff looks like
 
 ```
+TGME49_chrII	Liftoff	ncRNA_gene	7	2605	.	+	.	ID=MSTRG.1118;gene_id=MSTRG.1118;coverage=1.0;sequence_ID=1.0;extra_copy_number=0;copy_num_ID=MSTRG.1118_0;description=lncRNA;ebi_biotype=lncRNA
+TGME49_chrII	Liftoff	lnc_RNA	7	2605	.	+	.	ID=MSTRG.1118.1;Parent=MSTRG.1118;gene_id=MSTRG.1118;transcript_id=MSTRG.1118.1;extra_copy_number=0;description=lncRNA;gene_ebi_biotype=lncRNA
+TGME49_chrII	Liftoff	exon	7	623	.	+	.	ID=exon_MSTRG.1118.1-E1;Parent=MSTRG.1118.1;exon_number=1;gene_id=MSTRG.1118;transcript_id=MSTRG.1118.1;extra_copy_number=0
+TGME49_chrII	Liftoff	exon	2298	2605	.	+	.	ID=exon_MSTRG.1118.1-E2;Parent=MSTRG.1118.1;exon_number=2;gene_id=MSTRG.1118;transcript_id=MSTRG.1118.1;extra_copy_number=0
+TGME49_chrII	Liftoff	ncRNA_gene	825	11652	.	-	.	ID=MSTRG.1119;gene_id=MSTRG.1119;coverage=1.0;sequence_ID=1.0;extra_copy_number=0;copy_num_ID=MSTRG.1119_0;description=lncRNA;ebi_biotype=lncRNA
+TGME49_chrII	Liftoff	lnc_RNA	825	11652	.	-	.	ID=MSTRG.1119.3;Parent=MSTRG.1119;gene_id=MSTRG.1119;transcript_id=MSTRG.1119.3;extra_copy_number=0;description=lncRNA;gene_ebi_biotype=lncRNA
+TGME49_chrII	Liftoff	exon	825	1128	.	-	.	ID=exon_MSTRG.1119.3-E1;Parent=MSTRG.1119.3;exon_number=1;gene_id=MSTRG.1119;transcript_id=MSTRG.1119.3;extra_copy_number=0
 
 ```
 
