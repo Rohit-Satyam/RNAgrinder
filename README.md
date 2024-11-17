@@ -38,6 +38,23 @@ sed -i 's/gene_ebi_biotype/transcript_type/g'  PlasmoDB-66_Pfalciparum3D7.gtf
 sed -i 's/ebi_biotype/gene_type/g'  PlasmoDB-66_Pfalciparum3D7.gtf
 ```
 
+# Adding ncRNA to your organism of interest
+
+We will document here steps to convert the lncRNA annotation available publically for Plasmodium falciparum 3D7 and Toxoplasma gondii ME49 and how can be liftover these annotations using `Liftoff` tool.
+
+### Toxoplasma
+```
+# Because the annotation were generated from StringTie, the gene records were missing from GFF files. To add that, we will first use AGAT to fix this
+agat_convert_sp_gxf2gxf.pl -g Toxolncrna_v59.gff -o fixed.gff
+liftoff -g fixed.gff -o Toxolncrna_v68.gff  ToxoDB-68_TgondiiME49_Genome.fasta ToxoDB-59_TgondiiME49_Genome.fasta
+```
+> Now the lncRNA genes are tagged as ncRNA_gene at gene level and lnc_RNA at transcript level
+```
+grep TGME49_500145 ToxoDB-68_TgondiiME49.gff
+TGME49_chrVIIb	VEuPathDB	ncRNA_gene	1614480	1617748	.	+	.	ID=TGME49_500145;description=lncRNA;ebi_biotype=lncRNA
+TGME49_chrVIIb	VEuPathDB	lnc_RNA	1614480	1617748	.	+	.	ID=TGME49_500145.R149;Parent=TGME49_500145;description=lncRNA;gene_ebi_biotype=lncRNA
+TGME49_chrVIIb	VEuPathDB	exon	1614480	1617748	.	+	.	ID=exon_TGME49_500145.R149-E1;Parent=TGME49_500145.R149;gene_id=TGME49_500145
+```
 
 ## Command to run
 For **PE Data**
