@@ -83,7 +83,7 @@ $3 == "exon" {
 
 ## Finally merging the two annotations and make a gtf file as well
 agat_sp_merge_annotations.pl --gff ToxoDB-68_TgondiiME49.gff --gff ready2merge.gff --out ToxoDB-68_TgondiiME49_withlncRNA.gff
-agat_convert_sp_gff2gtf.pl -gff ToxoDB-68_TgondiiME49_withlncRNA.gff -o PlasmoDB-68_Pfalciparum3D7_withlncRNA.gtf --gtf_version 3
+agat_convert_sp_gff2gtf.pl -gff ToxoDB-68_TgondiiME49_withlncRNA.gff -o ToxoDB-68_TgondiiME49_withlncRNA.gtf --gtf_version 3
 ```
 Reference:
 ```
