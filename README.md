@@ -43,7 +43,7 @@ sed -i 's/ebi_biotype/gene_type/g'  PlasmoDB-66_Pfalciparum3D7.gtf
 We will document here steps to convert the lncRNA annotation available publically for Plasmodium falciparum 3D7 and Toxoplasma gondii ME49 and how can be liftover these annotations using `Liftoff` tool.
 
 ### For Toxoplasma
-```
+```bash
 # Because the annotation were generated from StringTie, the gene records were missing from GFF files. To add that, we will first use AGAT to fix this
 agat_convert_sp_gxf2gxf.pl -g Toxolncrna_v59.gff -o fixed.gff
 liftoff -g fixed.gff -o Toxolncrna_v68.gff  ToxoDB-68_TgondiiME49_Genome.fasta ToxoDB-59_TgondiiME49_Genome.fasta
