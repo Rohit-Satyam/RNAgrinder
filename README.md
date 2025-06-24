@@ -116,11 +116,12 @@ nextflow run main.nf --input 'data/data_pe/*R{1,2}_001.fastq.gz' \
 ```
 For **SE Data**
 
+Note that we also use `--rnaseqc_ext='--coverage --unpaired'` for SE data since rnaseqc will give you zero in "Gene Detected" column.
 ```
 nextflow run main.nf --input 'data_se/*.fastq.gz'
 --outdir results --ref /home/subudhak/Documents/amit_timeseries_redo/reference/PlasmoDB-64_Pfalciparum3D7_Genome.fasta \
 --gtf /home/subudhak/Documents/amit_timeseries_redo/reference/PlasmoDB-66_Pfalciparum3D7.gtf \
---mode SE --rrnaUse ribodetector --index_dir 00_index/
+--mode SE --rrnaUse ribodetector --index_dir 00_index/ --rnaseqc_ext='--coverage --unpaired'
 ```
 If you want to run Kraken2 and Braken as well on your dataset to get a metagenomic blueprint, you can enable the Kraken2 classification as follows:
 
