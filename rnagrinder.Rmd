@@ -55,8 +55,8 @@ rnaseqc$`rRNA Rate` <- rnaseqc$`rRNA Rate`*100
 rnaseqc$`Duplicate Rate of Mapped` <- rnaseqc$`Duplicate Rate of Mapped`*100
 table(df2$Samples==star$Filename)
 
-df3 <- cbind(df2,star[,c(2,5,6)],rnaseqc[,c(66,24,4)])
-df3$Duplicate_Reads <- round(rnaseqc$`Duplicate Reads`/2)
+df3 <- cbind(df2,star[,c("Total_Mapped_Percent", "Uniquely_Mapped_Reads_Number", "Uniquely_Mapped_Reads_Percent")],rnaseqc[,c("Genes Detected","rRNA Rate","Duplicate Rate of Mapped")])
+df3$Duplicate_Reads <- round(rnaseqc$`Mapped Duplicate Reads`/2)
 colnames(df3) <- c("Samples","Total Reads","Survied post Trimming","Read loss(%)","rRNA",
                    "rRNA (%)","non-rRNA reads","non-rRNA (%)","Total Mapped(%)",
                    "Unique Mapped Reads","Unique Mapped Rate","No. of Genes Detected","rRNA Rate (Post Alignment)","Duplicate (%)","Duplicate Reads")
